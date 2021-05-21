@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="templates/css/bootstrap.min.css">
+
+    <title>DB Lab3</title>
+    <style>
+
+a {
+  color: white;
+  text-decoration: none
+}
+   .unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;  
+  -khtml-user-select: none;   
+  -moz-user-select: none;     
+  -ms-user-select: none;      
+  user-select: none;          
+                              
+}
+  </style>
+  </head>
+  <body>
+<script>
+  function update(event) 
+  {
+  var upd =  event.target.parentElement.parentElement;
+  var event = upd.children;
+  for (var i = 1; i < event.length; i++) 
+  {
+    if(event[i].getAttribute('name') == 'delete')
+    {
+      break;
+    }
+    event[i].innerHTML = '<input class="form-control" form="formid'+event[0].innerHTML+'" value="' + event[i].innerHTML +'"name="'+document.getElementById("ids").children[i].innerHTML+'"id="'+ document.getElementById("ids").children[i].innerHTML+'">';
+  }
+  event[event.length-1].innerHTML = '<button type="submit" form="formid'+event[0].innerHTML+'" class="btn btn-lg btn-danger">Подтвердить</button>';
+  event[0].innerHTML = '<input class="form-control" form="formid'+event[0].innerHTML+'" value="' + event[0].innerHTML +'" name="'+document.getElementById("ids").children[0].innerHTML+'" readonly>';
+}
+</script>
+
+
+<a href="Series"><button type="button" class="btn btn-lg btn-danger">Серіали</button></a>
+<a href="Country"><button type="button" class="btn btn-lg btn-danger">Країни</button></a>
+
+<br/>
+<table class="table">
+  <thead>
+    <tr id="ids">
+      <th scope="col">Id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Country</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for d in data %}
+    <form action="Series/Update" method="post" id='formid{{d.id}}'>
+    <tr name='{{d.id}}'>
+      <th scope="row">{{ d.id }}</th>
+      <td>{{ d.name }}</td>
+      <td>{{ d.rating }}</td>
+      <td>{{ d.country }}</td>
+      <td name="delete" style="background: black; color: white; cursor: pointer;"; onmouseover="this.style.backgroundColor='red'; this.style.Color='black';"; onmouseout="this.style.backgroundColor='black';this.style.Color='white';"><a href='{{table}}/delete/{{d.name}}'><div class="unselectable">Видалити</div></a></td>
+      <td style="background: black; color: white; cursor: pointer;"; onmouseover="this.style.backgroundColor='red'; this.style.Color='black';"; onmouseout="this.style.backgroundColor='black';this.style.Color='white';"><div class="unselectable" onclick="update(event)">Відредагувати</div></td>
+
+    </tr>
+    </form>
+    {% endfor %}
+    <form action="" method="post">
+    <tr>
+      <th><input type="text" class="form-group" aria-describedby="emailHelp" name ="new_id"></th>
+      <td><input type="text" class="form-group" aria-describedby="emailHelp" name ="name"></td>
+      <td><input type="text" class="form-group" aria-describedby="emailHelp" name="rating"></td>
+      <td><input type="text" class="form-group" aria-describedby="emailHelp" name="country"></td>
+      <td><button type="submit" class="btn btn-lg btn-danger">Додати</button></td>
+    </tr>
+    </form>
+  </tbody>
+</table>
+</form>
+    <script src="templates/js/jquery-3.6.0.min.js"></script>
+    <script src="templates/js/bootstrap.min.js"></script>
+  </body>
+</html>
